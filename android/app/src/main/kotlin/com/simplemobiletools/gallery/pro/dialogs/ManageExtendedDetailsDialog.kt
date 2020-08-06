@@ -16,6 +16,7 @@ class ManageExtendedDetailsDialog(val activity: BaseSimpleActivity, val callback
         view.apply {
             manage_extended_details_name.isChecked = details and EXT_NAME != 0
             manage_extended_details_path.isChecked = details and EXT_PATH != 0
+            manage_extended_details_ipfs.isChecked = details and EXT_PATH != 0
             manage_extended_details_size.isChecked = details and EXT_SIZE != 0
             manage_extended_details_resolution.isChecked = details and EXT_RESOLUTION != 0
             manage_extended_details_last_modified.isChecked = details and EXT_LAST_MODIFIED != 0
