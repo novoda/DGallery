@@ -48,6 +48,9 @@ interface MediumDao {
     @Query("UPDATE media SET date_taken = :dateTaken WHERE full_path = :path COLLATE NOCASE")
     fun updateFavoriteDateTaken(path: String, dateTaken: Long)
 
+    @Query("UPDATE media SET ipfs_path = :ipfs WHERE full_path = :path COLLATE NOCASE")
+    fun updateIPFSPath(path: String, ipfs: String)
+    
     @Query("UPDATE media SET is_favorite = 0")
     fun clearFavorites()
 

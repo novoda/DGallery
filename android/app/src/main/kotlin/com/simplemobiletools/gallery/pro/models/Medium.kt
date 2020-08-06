@@ -48,6 +48,8 @@ data class Medium(
 
     fun isPortrait() = type == TYPE_PORTRAITS
 
+    fun isInIPFS() = !ipfs.isNullOrBlank()
+
     fun isHidden() = name.startsWith('.')
 
     fun getBubbleText(sorting: Int, context: Context, dateFormat: String, timeFormat: String) = when {

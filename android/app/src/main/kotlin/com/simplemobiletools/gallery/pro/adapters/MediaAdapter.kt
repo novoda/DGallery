@@ -25,6 +25,7 @@ import com.simplemobiletools.commons.views.FastScroller
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.gallery.pro.R
 import com.simplemobiletools.gallery.pro.activities.ViewPagerActivity
+import com.simplemobiletools.gallery.pro.databases.GalleryDatabase
 import com.simplemobiletools.gallery.pro.dialogs.DeleteWithRememberDialog
 import com.simplemobiletools.gallery.pro.extensions.*
 import com.simplemobiletools.gallery.pro.helpers.*
@@ -60,7 +61,6 @@ class MediaAdapter(activity: BaseSimpleActivity, var media: MutableList<Thumbnai
     private var cropThumbnails = config.cropThumbnails
     private var displayFilenames = config.displayFileNames
     private var showFileTypes = config.showThumbnailFileTypes
-
     init {
         setupDragListener(true)
         enableInstantLoad()
@@ -500,6 +500,11 @@ class MediaAdapter(activity: BaseSimpleActivity, var media: MutableList<Thumbnai
     private fun setupThumbnail(view: View, medium: Medium) {
         val isSelected = selectedKeys.contains(medium.path.hashCode())
         view.apply {
+            if (medium.isInIPFS()) {
+                medium_secured.visibility = View.VISIBLE
+            } else {
+                medium_secured.visibility = View.GONE
+            }
             play_outline.beVisibleIf(medium.isVideo() || medium.isPortrait())
             if (medium.isVideo()) {
                 play_outline.setImageResource(R.drawable.ic_play_outline_vector)

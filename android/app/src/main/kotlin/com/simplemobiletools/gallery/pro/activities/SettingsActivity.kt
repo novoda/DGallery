@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
@@ -108,6 +109,7 @@ class SettingsActivity : SimpleActivity() {
 
             if (config.backupIPFS) {
                 Log.i("TEST", "Starting ipfs sync")
+                Toast.makeText(this, "Securing your gallery to IPFS", Toast.LENGTH_SHORT).show()
                 val uploadWorkRequest: WorkRequest =
                         OneTimeWorkRequestBuilder<UploadIPFS>()
                                 .build()

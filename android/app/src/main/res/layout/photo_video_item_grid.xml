@@ -71,6 +71,19 @@
         android:src="@drawable/ic_check_vector"
         android:visibility="gone"/>
 
+    <ImageView
+      android:id="@+id/medium_secured"
+      android:layout_width="@dimen/selection_check_size"
+      android:layout_height="@dimen/selection_check_size"
+      android:layout_alignEnd="@+id/medium_name"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true"
+      android:layout_margin="@dimen/small_margin"
+      android:contentDescription="@null"
+      android:padding="@dimen/tiny_margin"
+      android:src="@drawable/ipfs"
+      android:visibility="gone" />
+
     <TextView
         android:id="@+id/medium_name"
         android:layout_width="match_parent"
