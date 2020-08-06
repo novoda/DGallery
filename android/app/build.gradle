@@ -72,6 +72,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     packagingOptions {
         exclude 'META-INF/library_release.kotlin_module'
     }

@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.dialogs.*
@@ -16,6 +20,7 @@ import com.simplemobiletools.gallery.pro.dialogs.ManageBottomActionsDialog
 import com.simplemobiletools.gallery.pro.dialogs.ManageExtendedDetailsDialog
 import com.simplemobiletools.gallery.pro.extensions.*
 import com.simplemobiletools.gallery.pro.helpers.*
+import com.simplemobiletools.gallery.pro.ipfs.UploadIPFS
 import com.simplemobiletools.gallery.pro.models.AlbumCover
 import kotlinx.android.synthetic.main.activity_settings.*
 import java.io.File
@@ -99,6 +104,18 @@ class SettingsActivity : SimpleActivity() {
         settings_ipfs_backup_holder.setOnClickListener {
             settings_IPFS_backup.toggle()
             config.backupIPFS = settings_IPFS_backup.isChecked
+
+
+            if (config.backupIPFS) {
+                Log.i("TEST", "Starting ipfs sync")
+                val uploadWorkRequest: WorkRequest =
+                        OneTimeWorkRequestBuilder<UploadIPFS>()
+                                .build()
+
+                WorkManager
+                        .getInstance(this)
+                        .enqueue(uploadWorkRequest)
+            }
 
         }
     }
@@ -845,7 +862,8 @@ class SettingsActivity : SimpleActivity() {
                     val existingCoverPaths = existingCovers.map { it.path }.toMutableList() as ArrayList<String>
 
                     val listType = object : TypeToken<List<AlbumCover>>() {}.type
-                    val covers = Gson().fromJson<ArrayList<AlbumCover>>(value.toString(), listType) ?: ArrayList(1)
+                    val covers = Gson().fromJson<ArrayList<AlbumCover>>(value.toString(), listType)
+                            ?: ArrayList(1)
                     covers.filter { !existingCoverPaths.contains(it.path) && getDoesFilePathExist(it.tmb) }.forEach {
                         existingCovers.add(it)
                     }

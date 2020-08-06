@@ -1,10 +1,7 @@
 package com.simplemobiletools.gallery.pro.interfaces
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 import com.simplemobiletools.gallery.pro.models.Medium
 
 @Dao
@@ -17,6 +14,12 @@ interface MediumDao {
 
     @Query("SELECT filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE deleted_ts != 0")
     fun getDeletedMedia(): List<Medium>
+
+    @Query("SELECT filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE ipfs_path == ''")
+    fun getNonIPFSMedia(): List<Medium>
+
+    @Update
+    fun updateMedium(vararg mediums: Medium)
 
     @Insert(onConflict = REPLACE)
     fun insert(medium: Medium)
