@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore.Images
 import android.text.Html
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -46,6 +47,7 @@ import com.simplemobiletools.gallery.pro.BuildConfig
 import com.simplemobiletools.gallery.pro.R
 import com.simplemobiletools.gallery.pro.adapters.MyPagerAdapter
 import com.simplemobiletools.gallery.pro.asynctasks.GetMediaAsynctask
+import com.simplemobiletools.gallery.pro.databases.GalleryDatabase
 import com.simplemobiletools.gallery.pro.dialogs.DeleteWithRememberDialog
 import com.simplemobiletools.gallery.pro.dialogs.ResizeWithPathDialog
 import com.simplemobiletools.gallery.pro.dialogs.SaveAsDialog
@@ -757,7 +759,7 @@ class ViewPagerActivity : SimpleActivity(), ViewPager.OnPageChangeListener, View
 
     private fun showProperties() {
         if (getCurrentMedium() != null) {
-            PropertiesDialog(this, getCurrentPath(), false)
+             PropertiesDialog(this, getCurrentPath(), false);
         }
     }
 
@@ -786,6 +788,22 @@ class ViewPagerActivity : SimpleActivity(), ViewPager.OnPageChangeListener, View
         bottom_share.beVisibleIf(visibleBottomActions and BOTTOM_ACTION_SHARE != 0)
         bottom_share.setOnClickListener {
             shareMediumPath(getCurrentPath())
+        }
+
+        bottom_ipfs.setOnClickListener {
+            Thread(Runnable {
+                val m = GalleryDatabase.getInstance(it.context).IPFSDao().getIPFS(currentMedium?.path.orEmpty())
+                Log.i("IPFS",  " <> " + m )
+                if (!m.isEmpty()) {
+                    val url = "https://ipfs.io/ipfs/" + m
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(url)
+                    startActivity(i)
+                } else {
+                    showErrorToast("No CID attached to this image")
+                }
+            }).start()
+
         }
 
         bottom_delete.beVisibleIf(visibleBottomActions and BOTTOM_ACTION_DELETE != 0)

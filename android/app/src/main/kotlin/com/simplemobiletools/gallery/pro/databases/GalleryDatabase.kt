@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.simplemobiletools.gallery.pro.interfaces.*
 import com.simplemobiletools.gallery.pro.models.*
 
-@Database(entities = [Directory::class, Medium::class, Widget::class, DateTaken::class, Favorite::class], version = 8)
+@Database(entities = [Directory::class, Medium::class, Widget::class, DateTaken::class, Favorite::class, IPFS::class], version = 8)
 abstract class GalleryDatabase : RoomDatabase() {
 
     abstract fun DirectoryDao(): DirectoryDao
@@ -21,6 +21,7 @@ abstract class GalleryDatabase : RoomDatabase() {
     abstract fun DateTakensDao(): DateTakensDao
 
     abstract fun FavoritesDao(): FavoritesDao
+    abstract fun IPFSDao(): IPFSDao
 
     companion object {
         private var db: GalleryDatabase? = null
@@ -79,7 +80,9 @@ abstract class GalleryDatabase : RoomDatabase() {
         private val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE media ADD COLUMN ipfs TEXT default '' NOT NULL")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `ipfs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `full_path` TEXT NOT NULL, `ipfs` TEXT NOT NULL)")
             }
         }
+
     }
 }

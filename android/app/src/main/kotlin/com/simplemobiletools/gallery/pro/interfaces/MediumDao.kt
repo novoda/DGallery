@@ -15,8 +15,11 @@ interface MediumDao {
     @Query("SELECT filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE deleted_ts != 0")
     fun getDeletedMedia(): List<Medium>
 
-    @Query("SELECT filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE ipfs_path == ''")
+    @Query("SELECT id, filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE ipfs_path == ''")
     fun getNonIPFSMedia(): List<Medium>
+
+    @Query("SELECT filename, full_path, parent_path, ipfs_path,last_modified, date_taken, size, type, video_duration, is_favorite, deleted_ts FROM media WHERE full_path = :path ")
+    fun getIPFS(path: String):  List<Medium>
 
     @Update
     fun updateMedium(vararg mediums: Medium)
