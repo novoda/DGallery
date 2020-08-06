@@ -5,12 +5,14 @@ import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.simplemobiletools.commons.activities.BaseSimpleActivity
 import com.simplemobiletools.commons.adapters.MyRecyclerViewAdapter
@@ -500,8 +502,15 @@ class MediaAdapter(activity: BaseSimpleActivity, var media: MutableList<Thumbnai
     private fun setupThumbnail(view: View, medium: Medium) {
         val isSelected = selectedKeys.contains(medium.path.hashCode())
         view.apply {
-            if (medium.isInIPFS()) {
+            val hash = cachedIPFS.find { it.first == medium.path && !it.second.isNullOrBlank() }?.second
+            if (hash != null) {
                 medium_secured.visibility = View.VISIBLE
+                medium_secured.setOnClickListener {
+                    val url = "https://ipfs.io/ipfs/" + hash
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(url)
+                    activity.startActivity(i)
+                }
             } else {
                 medium_secured.visibility = View.GONE
             }

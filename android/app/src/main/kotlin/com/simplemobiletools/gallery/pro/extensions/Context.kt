@@ -94,6 +94,8 @@ fun Context.movePinnedDirectoriesToFront(dirs: ArrayList<Directory>): ArrayList<
     return dirs
 }
 
+var cachedIPFS:List<Pair<String, String>> = emptyList()
+
 @Suppress("UNCHECKED_CAST")
 fun Context.getSortedDirectories(source: ArrayList<Directory>): ArrayList<Directory> {
     val sorting = config.directorySorting

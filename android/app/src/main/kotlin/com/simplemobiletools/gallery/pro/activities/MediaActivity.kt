@@ -116,10 +116,20 @@ class MediaActivity : SimpleActivity(), MediaOperationsListener {
         }
 
         updateWidgets()
+
     }
 
     override fun onStart() {
         super.onStart()
+        Thread(Runnable {
+            val medium = GalleryDatabase.getInstance(this).MediumDao().getNonIPFSMedia()
+            val ipfsList: MutableList<Pair<String, String>> = mutableListOf()
+            val ipfs = GalleryDatabase.getInstance(this).IPFSDao()
+            medium.forEach {
+                ipfsList.add(it.path to ipfs.getIPFS(it.path))
+            }
+            cachedIPFS = ipfsList
+        }).start()
         mTempShowHiddenHandler.removeCallbacksAndMessages(null)
     }
 

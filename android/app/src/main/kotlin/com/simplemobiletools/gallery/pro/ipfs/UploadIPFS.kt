@@ -11,6 +11,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.simplemobiletools.gallery.pro.R
 import com.simplemobiletools.gallery.pro.databases.GalleryDatabase
+import com.simplemobiletools.gallery.pro.extensions.cachedIPFS
 import com.simplemobiletools.gallery.pro.models.IPFS
 import com.simplemobiletools.gallery.pro.models.Medium
 import io.ipfs.kotlin.defaults.InfuraIPFS
@@ -36,6 +37,7 @@ class UploadIPFS(
         val uploadingNotification = configureNotifications(notificationManager, nonIPFSMedia)
 
         nonIPFSMedia.forEachIndexed { index, it ->
+            val ipfsList: MutableList<Pair<String, String>> = mutableListOf()
             showUpdating(notificationManager, uploadingNotification, nonIPFSMedia, index)
 
             kotlin.runCatching {
@@ -46,9 +48,11 @@ class UploadIPFS(
                 Log.i("IPFS", "Finished: " + it.path + " WITH CID: " + hn.Hash)
 
                 it.ipfs = hn.Hash;
+                ipfsList.add(it.path to hn.Hash)
                 GalleryDatabase.getInstance(context).IPFSDao().insert(IPFS(null, it.path, hn.Hash))
                 Log.i("IPFS", "Inserted into DB: " + it + " WITH CID: " + it.ipfs)
             }.onFailure { Log.e("IPFS", it.message) }
+            cachedIPFS = ipfsList
         };
         showUpdated(notificationManager)
     }
