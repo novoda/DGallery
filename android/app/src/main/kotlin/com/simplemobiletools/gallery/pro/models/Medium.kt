@@ -22,6 +22,7 @@ data class Medium(
         @PrimaryKey(autoGenerate = true) var id: Long?,
         @ColumnInfo(name = "filename") var name: String,
         @ColumnInfo(name = "full_path") var path: String,
+        @ColumnInfo(name = "ipfs_path") var ipfs: String,
         @ColumnInfo(name = "parent_path") var parentPath: String,
         @ColumnInfo(name = "last_modified") val modified: Long,
         @ColumnInfo(name = "date_taken") var taken: Long,

@@ -35,6 +35,7 @@ abstract class GalleryDatabase : RoomDatabase() {
                                 .addMigrations(MIGRATION_5_6)
                                 .addMigrations(MIGRATION_6_7)
                                 .addMigrations(MIGRATION_7_8)
+                                .addMigrations(MIGRATION_8_9)
                                 .build()
                     }
                 }
@@ -72,6 +73,12 @@ abstract class GalleryDatabase : RoomDatabase() {
         private val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE directories ADD COLUMN sort_value TEXT default '' NOT NULL")
+            }
+        }
+
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE media ADD COLUMN ipfs TEXT default '' NOT NULL")
             }
         }
     }

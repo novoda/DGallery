@@ -790,7 +790,7 @@ fun Context.addPathToDB(path: String) {
         try {
             val isFavorite = favoritesDB.isFavorite(path)
             val videoDuration = if (type == TYPE_VIDEOS) getDuration(path) ?: 0 else 0
-            val medium = Medium(null, path.getFilenameFromPath(), path, path.getParentPath(), System.currentTimeMillis(), System.currentTimeMillis(),
+            val medium = Medium(null, path.getFilenameFromPath(), path,"", path.getParentPath(), System.currentTimeMillis(), System.currentTimeMillis(),
                 File(path).length(), type, videoDuration, isFavorite, 0L)
 
             mediaDB.insert(medium)
@@ -821,7 +821,7 @@ fun Context.createDirectoryFromMedia(path: String, curMedia: ArrayList<Medium>, 
     }
 
     val isSortingAscending = config.directorySorting.isSortingAscending()
-    val defaultMedium = Medium(0, "", "", "", 0L, 0L, 0L, 0, 0, false, 0L)
+    val defaultMedium = Medium(0, "", "", "", "",0L, 0L, 0L, 0, 0, false, 0L)
     val firstItem = curMedia.firstOrNull() ?: defaultMedium
     val lastItem = curMedia.lastOrNull() ?: defaultMedium
     val dirName = checkAppendingHidden(path, hiddenString, includedFolders)

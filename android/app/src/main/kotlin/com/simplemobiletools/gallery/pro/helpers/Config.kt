@@ -17,6 +17,10 @@ class Config(context: Context) : BaseConfig(context) {
         fun newInstance(context: Context) = Config(context)
     }
 
+    var backupIPFS: Boolean
+        get(): Boolean = prefs.getBoolean("USE_IPFS", false)
+        set(uipfs) = prefs.edit().putBoolean("USE_IPFS", uipfs).apply()
+
     var directorySorting: Int
         get(): Int = prefs.getInt(DIRECTORY_SORT_ORDER, SORT_BY_DATE_MODIFIED or SORT_DESCENDING)
         set(order) = prefs.edit().putInt(DIRECTORY_SORT_ORDER, order).apply()

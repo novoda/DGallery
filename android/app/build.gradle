@@ -94,6 +94,11 @@ dependencies {
     implementation 'com.github.tibbi:gestureviews:512f929d82'
     implementation 'com.github.tibbi:subsampling-scale-image-view:81c021514c'
 
+    implementation 'com.github.ligi:ipfs-api-kotlin:0.15'
+    implementation "androidx.work:work-runtime-ktx:2.4.0"
+
+
+
     kapt 'com.github.bumptech.glide:compiler:4.10.0'
 
     kapt 'androidx.room:room-compiler:2.2.5'

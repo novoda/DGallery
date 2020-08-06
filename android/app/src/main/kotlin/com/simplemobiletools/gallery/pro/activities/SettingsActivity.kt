@@ -88,7 +88,19 @@ class SettingsActivity : SimpleActivity() {
         setupSectionColors()
         setupExportSettings()
         setupImportSettings()
+        setupIPFSSettings()
+
         invalidateOptionsMenu()
+
+    }
+
+    private fun setupIPFSSettings() {
+        settings_IPFS_backup.isChecked = config.backupIPFS
+        settings_ipfs_backup_holder.setOnClickListener {
+            settings_IPFS_backup.toggle()
+            config.backupIPFS = settings_IPFS_backup.isChecked
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
